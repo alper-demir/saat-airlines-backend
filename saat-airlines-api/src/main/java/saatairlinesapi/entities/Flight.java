@@ -1,9 +1,7 @@
 package saatairlinesapi.entities;
 
-import lombok.Data;
 import jakarta.persistence.*;
-
-import java.util.Date;
+import lombok.Data;
 
 
 @Entity
@@ -27,11 +25,11 @@ public class Flight {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
-    private Date date;
+    private String date;
 
     @Column(name = "arrival_time")
     @Temporal(TemporalType.TIME)
-    private Date arrivalTime;
+    private String arrivalTime;
 
     @Column(name = "capacity")
     private int capacity;
