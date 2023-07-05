@@ -3,10 +3,13 @@ package saatairlinesapi.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Data
 @Entity
+@Table(name = "routes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
