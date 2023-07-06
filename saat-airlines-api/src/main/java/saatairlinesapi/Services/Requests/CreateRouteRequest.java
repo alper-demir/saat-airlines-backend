@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreateRouteRequest {
-    private int source;
-    private int destination;
+    private int sourceAirportId;
+    private int destinationAirportId;
     private int distanceInMiles;
 }

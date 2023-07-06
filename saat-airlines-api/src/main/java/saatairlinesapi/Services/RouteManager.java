@@ -43,8 +43,8 @@ public class RouteManager implements RouteService {
     @Override
     public void add(CreateRouteRequest createRouteRequest) {
         // Kaynak ve hedef havalimanlarını id'lerine göre alıyoruz
-        Airport source = airportRepository.findById(createRouteRequest.getSource()).orElseThrow();
-        Airport destination = airportRepository.findById(createRouteRequest.getDestination()).orElseThrow();
+        Airport source = airportRepository.findById(createRouteRequest.getSourceAirportId()).orElseThrow();
+        Airport destination = airportRepository.findById(createRouteRequest.getDestinationAirportId()).orElseThrow();
 
         // Route nesnesini oluşturup kaydediyoruz
         Route route = new Route();
@@ -61,8 +61,8 @@ public class RouteManager implements RouteService {
                 .orElseThrow(() -> new IllegalArgumentException("Route bulunamadı."));
 
         // Güncelleme isteği ile gelen sourceId ve destinationId değerlerini kullanarak Airport nesnelerini alıyoruz
-        Airport source = airportRepository.findById(updateRouteRequest.getSource()).orElseThrow();
-        Airport destination = airportRepository.findById(updateRouteRequest.getDestination()).orElseThrow();
+        Airport source = airportRepository.findById(updateRouteRequest.getSourceAirportId()).orElseThrow();
+        Airport destination = airportRepository.findById(updateRouteRequest.getDestinationAirportId()).orElseThrow();
 
         // Route nesnesini güncelliyoruz
         existingRoute.setSource(source);
