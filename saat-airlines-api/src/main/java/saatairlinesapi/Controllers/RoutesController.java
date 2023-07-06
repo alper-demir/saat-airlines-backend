@@ -2,7 +2,6 @@ package saatairlinesapi.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import saatairlinesapi.Services.Requests.CreateAirportRequest;
 import saatairlinesapi.Services.Requests.CreateRouteRequest;
 import saatairlinesapi.Services.Requests.UpdateRouteRequest;
 import saatairlinesapi.Services.Responses.GetAllRoutesResponse;
@@ -13,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/routes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RoutesController {
     private RouteService routeService;
 
@@ -32,12 +32,12 @@ public class RoutesController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void add(CreateRouteRequest createRouteRequest){
+    public void add(@RequestBody CreateRouteRequest createRouteRequest){
         this.routeService.add(createRouteRequest);
     }
 
     @PutMapping
-    public void update(UpdateRouteRequest updateRouteRequest){
+    public void update(@RequestBody UpdateRouteRequest updateRouteRequest){
         this.routeService.update(updateRouteRequest);
     }
 

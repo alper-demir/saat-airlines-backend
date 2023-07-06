@@ -7,12 +7,12 @@ import saatairlinesapi.Services.Requests.CreateAirportRequest;
 import saatairlinesapi.Services.Requests.UpdateAirportRequest;
 import saatairlinesapi.Services.Responses.GetAllAirportsResponse;
 import saatairlinesapi.Services.Responses.GetByIdAirportResponse;
-import saatairlinesapi.entities.Airport;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/airports")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AirportsController {
 
     private AirportService airportService;
@@ -28,7 +28,7 @@ public class AirportsController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void add(CreateAirportRequest createAirportRequest){
+    public void add(@RequestBody CreateAirportRequest createAirportRequest){
         this.airportService.add(createAirportRequest);
     }
 
@@ -37,7 +37,7 @@ public class AirportsController {
         return airportService.getById(id);
     }
     @PutMapping
-    public void update(UpdateAirportRequest updateAirportRequest){
+    public void update(@RequestBody UpdateAirportRequest updateAirportRequest){
         this.airportService.update(updateAirportRequest);
     }
 

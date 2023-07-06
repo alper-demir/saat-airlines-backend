@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/flights")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FlightsController {
     private FlightService flightService;
     public FlightsController(FlightService flightService){
@@ -22,7 +23,7 @@ public class FlightsController {
     }
 
     @PostMapping("/add")
-    public void add(CreateFlightRequest createFlightRequest){
+    public void add(@RequestBody CreateFlightRequest createFlightRequest){
         this.flightService.add(createFlightRequest);
     }
 
@@ -32,7 +33,7 @@ public class FlightsController {
     }
 
     @PutMapping
-    public void update(UpdateFlightRequest updateFlightRequest){
+    public void update(@RequestBody UpdateFlightRequest updateFlightRequest){
         this.flightService.update(updateFlightRequest);
     }
 
