@@ -27,6 +27,10 @@ public class Flight {
     @Column(name = "date")
     private String date;
 
+    @Column(name = "departure_time")
+    @Temporal(TemporalType.TIME)
+    private String departureTime;
+
     @Column(name = "arrival_time")
     @Temporal(TemporalType.TIME)
     private String arrivalTime;

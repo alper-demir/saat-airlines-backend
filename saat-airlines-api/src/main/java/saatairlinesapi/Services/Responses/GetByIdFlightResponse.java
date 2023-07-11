@@ -15,6 +15,7 @@ public class GetByIdFlightResponse {
     private Route route;
     private int price;
     private String date;
+    private String departureTime;
     private String arrivalTime;
     private int capacity;
     private FlightStatus status;

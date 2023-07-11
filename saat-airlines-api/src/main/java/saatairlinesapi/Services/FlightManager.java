@@ -45,6 +45,7 @@ public class FlightManager implements FlightService {
         flight.setDate(createFlightRequest.getDate());
         flight.setPrice(createFlightRequest.getPrice());
         flight.setStatus(createFlightRequest.getStatus());
+        flight.setDepartureTime(createFlightRequest.getDepartureTime());
         flight.setArrivalTime(createFlightRequest.getArrivalTime());
         flight.setCapacity(createFlightRequest.getCapacity());
         flight.setRoute(route);
@@ -75,6 +76,7 @@ public class FlightManager implements FlightService {
         existingFlight.setDate(updateFlightRequest.getDate());
         existingFlight.setPrice(updateFlightRequest.getPrice());
         existingFlight.setStatus(updateFlightRequest.getStatus());
+        existingFlight.setDepartureTime(updateFlightRequest.getDepartureTime());
         existingFlight.setArrivalTime(updateFlightRequest.getArrivalTime());
         existingFlight.setCapacity(updateFlightRequest.getCapacity());
 
