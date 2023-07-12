@@ -1,6 +1,8 @@
 package saatairlinesapi.Services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import saatairlinesapi.Repositories.FlightRepository;
 import saatairlinesapi.Repositories.RouteRepository;
@@ -10,11 +12,15 @@ import saatairlinesapi.Services.Responses.GetAllFlightsResponse;
 import saatairlinesapi.Services.Responses.GetByIdFlightResponse;
 import saatairlinesapi.core.utilities.mappers.ModelMapperService;
 import saatairlinesapi.entities.Flight;
+import saatairlinesapi.entities.FlightStatus;
 import saatairlinesapi.entities.Route;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EnableScheduling // cron işlemi yapılacağını bildirir
 @AllArgsConstructor
 @Service
 public class FlightManager implements FlightService {
@@ -56,7 +62,7 @@ public class FlightManager implements FlightService {
     @Override
     public GetByIdFlightResponse getById(int id) {
         Flight flight = this.flightRepository.findById(id).orElseThrow();
-        GetByIdFlightResponse response = this.modelMapperService.forResponse().map(flight,GetByIdFlightResponse.class);
+        GetByIdFlightResponse response = this.modelMapperService.forResponse().map(flight, GetByIdFlightResponse.class);
         return response;
     }
 
@@ -81,5 +87,26 @@ public class FlightManager implements FlightService {
         existingFlight.setCapacity(updateFlightRequest.getCapacity());
 
         flightRepository.save(existingFlight);
+    }
+
+    @Scheduled(fixedRate = 60000) // Her dakika çalışacak.
+    public void checkStatus() {
+        List<GetAllFlightsResponse> flightsResponse = getAll();
+
+        for (GetAllFlightsResponse flight : flightsResponse) {
+            // Veritabanından gelen tarih ve saat bilgilerini birleştirme
+            String departureDateTimeString = flight.getDate() + "T" + flight.getDepartureTime() + ":00";
+            LocalDateTime departureDateTime = LocalDateTime.parse(departureDateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+            // Anlık tarih bilgisi
+            LocalDateTime currentDate = LocalDateTime.now(); //  2023-07-12T11:38:34.184303600 formatında döndürür
+
+            // Tarihleri karşılaştırma
+            if (currentDate.isAfter(departureDateTime)) { // isAfter() metodu, bir LocalDateTime nesnesinin başka bir LocalDateTime nesnesinden sonra olup olmadığını kontrol eder
+                Flight existingFlight = flightRepository.findById(flight.getId()).orElseThrow();
+                existingFlight.setStatus(FlightStatus.Departed);
+                flightRepository.save(existingFlight);
+            }
+        }
     }
 }
