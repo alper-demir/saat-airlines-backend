@@ -13,22 +13,25 @@ import saatairlinesapi.entities.User;
 public class UserManager implements UserService {
     private ModelMapperService modelMapperService;
     private UserRepository userRepository;
-
+    private JwtService jwtService;
     @Override
     public void add(CreateUserRequest createUserRequest) {
         User user = modelMapperService.forRequest().map(createUserRequest, User.class);
-        this.userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
     public boolean login(UserLoginRequest userLoginRequest) {
         String email = userLoginRequest.getEmail();
         String password = userLoginRequest.getPassword();
-        if (userRepository.existsByEmailAndPassword(email, password)) {
-            return true; // Kullanıcı veritabanında mevcut.
+        boolean isUserExists = userRepository.existsByEmailAndPassword(email, password);
+        if(isUserExists){
+            // Generate jwt token
+            String token = jwtService.createJwtToken(email);
+            System.out.println(token);
+            System.out.println(jwtService.isJwtTokenValid(token,email));
         }
-        return false; // Kullanıcı veri tabanında yok.
-
+        return isUserExists;
     }
 
 }
